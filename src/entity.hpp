@@ -1,6 +1,5 @@
 #pragma once
 
-#include <cstdint>
 #include <ostream>
 #include <string>
 
@@ -10,17 +9,20 @@ class Entity {
 private:
   std::string m_Name;
   float_t m_Initiative;
-  uint32_t m_FirstRound;
+  std::size_t m_FirstRound;
 
 public:
   Entity(std::string const &name, float_t initiative);
-  Entity(std::string const &name, float_t initiative, uint32_t firstRound);
+  Entity(std::string const &name, float_t initiative, std::size_t firstRound);
 
   std::string const &getName() const;
   float_t getInitiative() const;
-  unsigned int getFirstRound() const;
+  std::size_t getFirstRound() const;
+
+  bool Equals(Entity const &other) const;
 };
 
 std::ostream &operator<<(std::ostream &os, Entity const &entity);
+bool operator==(Entity const &left, Entity const &right);
 } // namespace init_tracker
 } // namespace nd
