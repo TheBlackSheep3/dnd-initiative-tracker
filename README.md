@@ -8,11 +8,11 @@ To build this software you require the following tools
 ## Build
 Run the following commands to build the project
 ```
-$ cmake -B build
-$ cmake --build build
+$ cmake -B bld
+$ cmake --build bld
 ```
 
 To use the software run
 ```
-$ ./build/dnd-initiative-tracker
+$ ./bld/dnd-initiative-tracker
 ```
