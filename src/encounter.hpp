@@ -14,6 +14,8 @@ private:
   std::size_t m_MaxRounds;
   std::size_t m_EntityIndex;
 
+  inline void sortEntities();
+
 public:
   Encounter(std::vector<Entity> &&entities);
   Encounter(std::vector<Entity> &&entities, std::size_t round,

@@ -9,13 +9,22 @@
 
 namespace nd {
 namespace init_tracker {
+inline void Encounter::sortEntities() {
+  std::sort(m_Entities.begin(), m_Entities.end(),
+            [](Entity const &left, Entity const &right) {
+              return left.getInitiative() > right.getInitiative();
+            });
+}
+
 Encounter::Encounter(std::vector<Entity> &&entities)
     : Encounter{std::move(entities), 1, std::numeric_limits<std::size_t>::max(),
                 0} {}
 Encounter::Encounter(std::vector<Entity> &&entities, std::size_t round,
                      std::size_t maxRounds, std::size_t entityIndex)
     : m_Entities{entities}, m_Round{round}, m_MaxRounds{maxRounds},
-      m_EntityIndex{entityIndex} {}
+      m_EntityIndex{entityIndex} {
+  sortEntities();
+}
 
 Encounter::StepResult_t Encounter::next() {
   m_EntityIndex += 1;
@@ -35,10 +44,7 @@ bool Encounter::addEntity(Entity const &entity) {
   try {
     std::vector<Entity> copy = m_Entities;
     copy.push_back(entity);
-    std::sort(copy.begin(), copy.end(),
-              [](Entity const &left, Entity const &right) {
-                return left.getInitiative() > right.getInitiative();
-              });
+    sortEntities();
     if (m_Entities.size() > 0) {
       bool found = false;
       std::size_t index = 0;
