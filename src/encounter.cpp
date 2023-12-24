@@ -9,10 +9,13 @@
 
 namespace nd {
 namespace init_tracker {
-Encounter::Encounter()
-    : Encounter{1, std::numeric_limits<std::size_t>::max()} {}
-Encounter::Encounter(std::size_t round, std::size_t maxRounds)
-    : m_Entities{}, m_Round{round}, m_MaxRounds{maxRounds}, m_EntityIndex{0} {}
+Encounter::Encounter(std::vector<Entity> &&entities)
+    : Encounter{std::move(entities), 1, std::numeric_limits<std::size_t>::max(),
+                0} {}
+Encounter::Encounter(std::vector<Entity> &&entities, std::size_t round,
+                     std::size_t maxRounds, std::size_t entityIndex)
+    : m_Entities{entities}, m_Round{round}, m_MaxRounds{maxRounds},
+      m_EntityIndex{entityIndex} {}
 
 Encounter::StepResult_t Encounter::next() {
   if (m_EntityIndex >= m_Entities.size()) {

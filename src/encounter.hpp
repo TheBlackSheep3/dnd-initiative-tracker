@@ -15,8 +15,9 @@ private:
   std::size_t m_EntityIndex;
 
 public:
-  Encounter();
-  Encounter(std::size_t round, std::size_t maxRounds);
+  Encounter(std::vector<Entity> &&entities);
+  Encounter(std::vector<Entity> &&entities, std::size_t round,
+            std::size_t maxRounds, std::size_t entityIndex);
 
   enum StepResult_t {
     Finished,

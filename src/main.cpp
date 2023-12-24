@@ -1,7 +1,10 @@
+#include <algorithm>
 #include <cmath>
 #include <cstdio>
 #include <iostream>
 #include <string>
+#include <utility>
+#include <vector>
 
 #include "cmake_variables.hpp"
 #include "encounter.hpp"
@@ -17,14 +20,14 @@ void printRoundHeader(std::ostream &os, size_t round) {
 int main(int argc, char *argv[]) {
   std::cout << argv[0] << " version " << VERSION << std::endl;
   char buffer[16];
+  std::vector<Entity> skeletons{};
   std::string str{};
-  Encounter encounter{1, 3};
   for (int i = 0; i < 5; ++i) {
     snprintf(buffer, 9, "Skelly %d", i);
     str = std::string{buffer};
-    Entity s{str, (float_t)i};
-    encounter.addEntity(s);
+    skeletons.push_back(std::move(Entity{str, static_cast<float_t>(i)}));
   }
+  Encounter encounter{std::move(skeletons), 1, 3, 0};
 
   std::cout << "sizeof(Entity): " << sizeof(Entity) << "\n";
   std::cout << "sizeof(Encounter): " << sizeof(Encounter) << "\n";
