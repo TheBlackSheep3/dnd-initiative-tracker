@@ -1,4 +1,3 @@
-#include <algorithm>
 #include <cmath>
 #include <cstdio>
 #include <iostream>
@@ -14,7 +13,7 @@ using namespace nd::init_tracker;
 
 void printRoundHeader(std::ostream &os, size_t round) {
   std::string s(20, '=');
-  os << s << " Round 1 " << s << "\n";
+  os << s << " Round " << round << " " << s << "\n";
 }
 
 int main(int argc, char *argv[]) {
@@ -35,11 +34,11 @@ int main(int argc, char *argv[]) {
   std::optional<Encounter::StepResult_t> stepResult{};
   do {
     printRoundHeader(std::cout, encounter.getCurrentRound());
-    std::cout << "\n";
     for (size_t i = 0; i < encounter.getEntities().size(); ++i) {
       std::cout << (i == encounter.getCurrentEntityIndex() ? "> " : "  ")
                 << encounter.getEntities()[i] << "\n";
     }
+    std::cout << "\n";
     stepResult = encounter.next();
   } while (stepResult.has_value() &&
            stepResult.value() != Encounter::StepResult_t::Finished);
