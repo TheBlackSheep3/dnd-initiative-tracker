@@ -24,6 +24,7 @@ Encounter::StepResult_t Encounter::next() {
       return Encounter::StepResult_t::NextRound;
     }
   } else {
+    m_EntityIndex += 1;
     return Encounter::StepResult_t::NextEntity;
   }
 }

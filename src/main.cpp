@@ -37,7 +37,7 @@ int main(int argc, char *argv[]) {
       std::cout << (i == encounter.getCurrentEntityIndex() ? "> " : "  ")
                 << encounter.getEntities()[i] << "\n";
     }
-    std::optional{encounter.next()};
+    stepResult = encounter.next();
   } while (stepResult.has_value() &&
            stepResult.value() != Encounter::StepResult_t::Finished);
   return 0;
