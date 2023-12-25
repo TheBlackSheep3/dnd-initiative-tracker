@@ -48,8 +48,8 @@ bool Encounter::addEntity(Entity const &entity) {
     if (m_Entities.size() > 0) {
       bool found = false;
       std::size_t index = 0;
-      for (auto entity : copy) {
-        if (entity == m_Entities[m_EntityIndex]) {
+      for (auto e : copy) {
+        if (e == m_Entities[m_EntityIndex]) {
           found = true;
           break;
         }

@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <cmath>
 #include <cstdio>
 #include <iostream>
@@ -20,15 +21,24 @@ int main(/* int argc, char *argv[] */) {
   std::cout << PROJECT_NAME << "\nby " << AUTHOR << "\nVersion " << VERSION
             << "\n"
             << std::endl;
-  char buffer[16];
-  std::vector<Entity> skeletons{};
+  std::vector<Entity> entities{};
   std::string str{};
-  for (int i = 0; i < 5; ++i) {
-    snprintf(buffer, 9, "Skelly %d", i);
-    str = std::string{buffer};
-    skeletons.push_back(Entity{str, static_cast<float_t>(i)});
+  float_t initiative;
+  while (true) {
+    std::cout << "New entity:\nName: ";
+    std::cin >> str;
+    std::cout << "Initiative: ";
+    std::cin >> initiative;
+    Entity entity{str, initiative};
+    entities.push_back(entity);
+    std::cout << "added entity { " << entity << " }\n\nAdd another entity? ";
+    std::cin >> str;
+    if (std::find(str.begin(), str.end(), 'y') == str.end() &&
+        std::find(str.begin(), str.end(), 'Y') == str.end()) {
+      break;
+    }
   }
-  Encounter encounter{std::move(skeletons), 1, 3, 0};
+  Encounter encounter{std::move(entities), 1, 3, 0};
 
   std::cout << "sizeof(Entity): " << sizeof(Entity) << "\n";
   std::cout << "sizeof(Encounter): " << sizeof(Encounter) << "\n";

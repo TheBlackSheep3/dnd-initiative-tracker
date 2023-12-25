@@ -1,4 +1,6 @@
 #include <cstddef>
+#include <iomanip>
+#include <ios>
 #include <ostream>
 
 #include "entity.hpp"
@@ -36,7 +38,8 @@ bool Entity::Equals(Entity const &other) const {
 }
 
 std::ostream &operator<<(std::ostream &os, Entity const &entity) {
-  return os << entity.getName() << " (" << entity.getInitiative() << ")";
+  return os << entity.getName() << " (" << std::fixed << std::setprecision(2)
+            << entity.getInitiative() << ")";
 }
 bool operator==(Entity const &left, Entity const &right) {
   return left.Equals(right);
