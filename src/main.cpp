@@ -2,6 +2,8 @@
 #include <cmath>
 #include <cstdio>
 #include <iostream>
+#include <iterator>
+#include <ostream>
 #include <string>
 #include <utility>
 #include <vector>
@@ -32,16 +34,21 @@ int main(/* int argc, char *argv[] */) {
     Entity entity{str, initiative};
     entities.push_back(entity);
     std::cout << "added entity { " << entity << " }\n\nAdd another entity? ";
-    std::cin >> str;
-    if (std::find(str.begin(), str.end(), 'y') == str.end() &&
-        std::find(str.begin(), str.end(), 'Y') == str.end()) {
+    std::getline(std::cin, str);
+    // need to read line from std::cin again to prevent automatic continuation
+    // not really sure why though
+    if (str == "")
+    {
+      std::getline(std::cin, str);
+    }
+    std::cout << "\n";
+    if (std::find(std::begin(str), std::end(str), 'y') == std::end(str) &&
+        std::find(std::begin(str), std::end(str), 'Y') == std::end(str)) {
       break;
     }
   }
-  Encounter encounter{std::move(entities), 1, 3, 0};
 
-  std::cout << "sizeof(Entity): " << sizeof(Entity) << "\n";
-  std::cout << "sizeof(Encounter): " << sizeof(Encounter) << "\n";
+  Encounter encounter{std::move(entities)};
 
   std::optional<Encounter::StepResult_t> stepResult{};
   do {
@@ -51,8 +58,11 @@ int main(/* int argc, char *argv[] */) {
                 << encounter.getEntities()[i] << "\n";
     }
     std::cout << "\n";
+    std::getline(std::cin, str);
     stepResult = encounter.next();
   } while (stepResult.has_value() &&
-           stepResult.value() != Encounter::StepResult_t::Finished);
+           stepResult.value() != Encounter::StepResult_t::Finished &&
+           std::find(std::begin(str), std::end(str), 'q') == std::end(str) &&
+           std::find(std::begin(str), std::end(str), 'Q') == std::end(str));
   return 0;
 }
