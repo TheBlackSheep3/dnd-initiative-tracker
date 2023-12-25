@@ -17,7 +17,9 @@ void printRoundHeader(std::ostream &os, size_t round) {
 }
 
 int main(int argc, char *argv[]) {
-  std::cout << argv[0] << " version " << VERSION << std::endl;
+  std::cout << PROJECT_NAME << "\nby " << AUTHOR << "\nVersion " << VERSION
+            << "\n"
+            << std::endl;
   char buffer[16];
   std::vector<Entity> skeletons{};
   std::string str{};
