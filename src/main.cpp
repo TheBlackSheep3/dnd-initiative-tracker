@@ -16,7 +16,7 @@ void printRoundHeader(std::ostream &os, size_t round) {
   os << s << " Round " << round << " " << s << "\n";
 }
 
-int main(int argc, char *argv[]) {
+int main(/* int argc, char *argv[] */) {
   std::cout << PROJECT_NAME << "\nby " << AUTHOR << "\nVersion " << VERSION
             << "\n"
             << std::endl;
@@ -26,7 +26,7 @@ int main(int argc, char *argv[]) {
   for (int i = 0; i < 5; ++i) {
     snprintf(buffer, 9, "Skelly %d", i);
     str = std::string{buffer};
-    skeletons.push_back(std::move(Entity{str, static_cast<float_t>(i)}));
+    skeletons.push_back(Entity{str, static_cast<float_t>(i)});
   }
   Encounter encounter{std::move(skeletons), 1, 3, 0};
 
