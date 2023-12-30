@@ -24,5 +24,6 @@ public:
 
 std::ostream &operator<<(std::ostream &os, Entity const &entity);
 bool operator==(Entity const &left, Entity const &right);
+bool operator!=(Entity const &left, Entity const &right);
 } // namespace init_tracker
 } // namespace nd

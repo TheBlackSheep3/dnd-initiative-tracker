@@ -44,5 +44,8 @@ std::ostream &operator<<(std::ostream &os, Entity const &entity) {
 bool operator==(Entity const &left, Entity const &right) {
   return left.Equals(right);
 }
+bool operator!=(Entity const &left, Entity const &right) {
+  return !left.Equals(right);
+}
 } // namespace init_tracker
 } // namespace nd

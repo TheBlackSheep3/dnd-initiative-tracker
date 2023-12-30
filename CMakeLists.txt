@@ -14,3 +14,4 @@ target_compile_options(dnd-initiative-tracker_compiler_options INTERFACE
 )
 
 add_subdirectory(src)
+add_subdirectory(test)
