@@ -17,5 +17,16 @@ target_link_libraries(
 )
 target_include_directories(entity_test PRIVATE "${PROJECT_SOURCE_DIR}/src")
 
+add_executable(encounter_test encounter_test.cpp)
+target_link_libraries(
+	encounter_test
+	dnd-initiative-tracker_compiler_options
+	encounter
+	entity
+	GTest::gtest_main
+)
+target_include_directories(encounter_test PRIVATE "${PROJECT_SOURCE_DIR}/src")
+
 include(GoogleTest)
 gtest_discover_tests(entity_test)
+gtest_discover_tests(encounter_test)

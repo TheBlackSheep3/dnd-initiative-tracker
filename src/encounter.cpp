@@ -27,6 +27,9 @@ Encounter::Encounter(std::vector<Entity> &&entities, std::size_t round,
 }
 
 Encounter::StepResult_t Encounter::next() {
+  if (0 == m_Entities.size()) {
+    return Encounter::StepResult_t::Finished;
+  }
   m_EntityIndex += 1;
   if (m_EntityIndex >= m_Entities.size()) {
     m_EntityIndex = 0;
