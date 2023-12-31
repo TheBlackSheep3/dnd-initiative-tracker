@@ -12,7 +12,16 @@ $ cmake -B bld
 $ cmake --build bld
 ```
 
+## Testing
+For unit tests this project relies on [GoogleTest](https://github.com/google/googletest) in version 1.14.0. To execute the unit tests run the following commands
+```
+$ cmake -B bld
+$ cmake --build bld
+$ ctest --test-dir bld/test
+```
+
+## Usage
 To use the software run
 ```
-$ ./bld/dnd-initiative-tracker
+$ ./bld/src/dnd-initiative-tracker
 ```
