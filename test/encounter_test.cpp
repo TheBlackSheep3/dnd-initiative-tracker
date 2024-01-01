@@ -70,6 +70,7 @@ TEST_F(EncounterTest, NextTest) {
   EXPECT_EQ(Encounter::NextRound, middle_encounter.next());
   EXPECT_EQ(Encounter::Finished, finished_encounter.next());
 }
+
 TEST_F(EncounterTest, AddEntityTest) {
   Entity boblin{"Boblin", 7.09};
   ASSERT_TRUE(empty_encounter.addEntity(boblin));
@@ -124,6 +125,26 @@ TEST_F(EncounterTest, AddEntityTest) {
   EXPECT_EQ(3, finished_encounter.getCurrentEntityIndex());
   EXPECT_EQ(5, finished_encounter.getCurrentRound());
   EXPECT_EQ(5, finished_encounter.getMaxRounds());
+}
+
+TEST_F(EncounterTest, RemoveEntityTest) {
+  ASSERT_FALSE(empty_encounter.removeEntity(1));
+  ASSERT_TRUE(fresh_encounter.removeEntity(1));
+  ASSERT_EQ(2, fresh_encounter.getEntities().size());
+  EXPECT_EQ(0, fresh_encounter.getCurrentEntityIndex());
+  EXPECT_EQ(1, fresh_encounter.getCurrentRound());
+  EXPECT_EQ(5, fresh_encounter.getMaxRounds());
+  ASSERT_TRUE(middle_encounter.removeEntity(1));
+  ASSERT_EQ(2, middle_encounter.getEntities().size());
+  EXPECT_EQ(1, middle_encounter.getCurrentEntityIndex());
+  EXPECT_EQ(3, middle_encounter.getCurrentRound());
+  EXPECT_EQ(5, middle_encounter.getMaxRounds());
+  ASSERT_TRUE(finished_encounter.removeEntity(1));
+  ASSERT_EQ(2, finished_encounter.getEntities().size());
+  EXPECT_EQ(1, finished_encounter.getCurrentEntityIndex());
+  EXPECT_EQ(5, finished_encounter.getCurrentRound());
+  EXPECT_EQ(5, finished_encounter.getMaxRounds());
+  ASSERT_TRUE(AreEntitiesSorted());
 }
 } // namespace init_tracker
 } // namespace nd

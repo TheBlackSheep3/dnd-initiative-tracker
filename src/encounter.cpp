@@ -78,7 +78,7 @@ bool Encounter::removeEntity(std::size_t entityIndex) {
     return false;
   }
   try {
-    if (entityIndex >= m_EntityIndex && m_EntityIndex != 0) {
+    if (entityIndex < m_EntityIndex && m_EntityIndex != 0) {
       m_EntityIndex -= 1;
     }
     std::vector<Entity> copy = m_Entities;
