@@ -72,29 +72,56 @@ TEST_F(EncounterTest, NextTest) {
 }
 TEST_F(EncounterTest, AddEntityTest) {
   Entity boblin{"Boblin", 7.09};
-  empty_encounter.addEntity(boblin);
+  ASSERT_TRUE(empty_encounter.addEntity(boblin));
   ASSERT_EQ(1, empty_encounter.getEntities().size());
   EXPECT_EQ(boblin, empty_encounter.getEntities()[0]);
   EXPECT_EQ(0, empty_encounter.getCurrentEntityIndex());
   EXPECT_EQ(1, empty_encounter.getCurrentRound());
   EXPECT_EQ(std::numeric_limits<std::size_t>::max(),
             empty_encounter.getMaxRounds());
-  fresh_encounter.addEntity(boblin);
+  ASSERT_TRUE(fresh_encounter.addEntity(boblin));
   ASSERT_EQ(4, fresh_encounter.getEntities().size());
   EXPECT_EQ(boblin, fresh_encounter.getEntities()[3]);
   EXPECT_EQ(0, fresh_encounter.getCurrentEntityIndex());
   EXPECT_EQ(1, fresh_encounter.getCurrentRound());
   EXPECT_EQ(5, fresh_encounter.getMaxRounds());
-  middle_encounter.addEntity(boblin);
+  ASSERT_TRUE(middle_encounter.addEntity(boblin));
   ASSERT_EQ(4, middle_encounter.getEntities().size());
   EXPECT_EQ(boblin, middle_encounter.getEntities()[3]);
   EXPECT_EQ(1, middle_encounter.getCurrentEntityIndex());
   EXPECT_EQ(3, middle_encounter.getCurrentRound());
   EXPECT_EQ(5, middle_encounter.getMaxRounds());
-  finished_encounter.addEntity(boblin);
+  ASSERT_TRUE(finished_encounter.addEntity(boblin));
   ASSERT_EQ(4, finished_encounter.getEntities().size());
   EXPECT_EQ(boblin, finished_encounter.getEntities()[3]);
   EXPECT_EQ(2, finished_encounter.getCurrentEntityIndex());
+  EXPECT_EQ(5, finished_encounter.getCurrentRound());
+  EXPECT_EQ(5, finished_encounter.getMaxRounds());
+
+  boblin = Entity{"Boblin the fast", 20.20};
+  ASSERT_TRUE(empty_encounter.addEntity(boblin));
+  ASSERT_EQ(2, empty_encounter.getEntities().size());
+  EXPECT_EQ(boblin, empty_encounter.getEntities()[0]);
+  EXPECT_EQ(1, empty_encounter.getCurrentEntityIndex());
+  EXPECT_EQ(1, empty_encounter.getCurrentRound());
+  EXPECT_EQ(std::numeric_limits<std::size_t>::max(),
+            empty_encounter.getMaxRounds());
+  ASSERT_TRUE(fresh_encounter.addEntity(boblin));
+  ASSERT_EQ(5, fresh_encounter.getEntities().size());
+  EXPECT_EQ(boblin, fresh_encounter.getEntities()[0]);
+  EXPECT_EQ(1, fresh_encounter.getCurrentEntityIndex());
+  EXPECT_EQ(1, fresh_encounter.getCurrentRound());
+  EXPECT_EQ(5, fresh_encounter.getMaxRounds());
+  ASSERT_TRUE(middle_encounter.addEntity(boblin));
+  ASSERT_EQ(5, middle_encounter.getEntities().size());
+  EXPECT_EQ(boblin, middle_encounter.getEntities()[0]);
+  EXPECT_EQ(2, middle_encounter.getCurrentEntityIndex());
+  EXPECT_EQ(3, middle_encounter.getCurrentRound());
+  EXPECT_EQ(5, middle_encounter.getMaxRounds());
+  ASSERT_TRUE(finished_encounter.addEntity(boblin));
+  ASSERT_EQ(5, finished_encounter.getEntities().size());
+  EXPECT_EQ(boblin, finished_encounter.getEntities()[0]);
+  EXPECT_EQ(3, finished_encounter.getCurrentEntityIndex());
   EXPECT_EQ(5, finished_encounter.getCurrentRound());
   EXPECT_EQ(5, finished_encounter.getMaxRounds());
 }

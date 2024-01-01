@@ -9,8 +9,8 @@
 
 namespace nd {
 namespace init_tracker {
-inline void Encounter::sortEntities() {
-  std::sort(m_Entities.begin(), m_Entities.end(),
+inline void Encounter::sortEntities(std::vector<Entity>& entities) {
+  std::sort(entities.begin(), entities.end(),
             [](Entity const &left, Entity const &right) {
               return left.getInitiative() > right.getInitiative();
             });
@@ -23,7 +23,7 @@ Encounter::Encounter(std::vector<Entity> &&entities, std::size_t round,
                      std::size_t maxRounds, std::size_t entityIndex)
     : m_Entities{entities}, m_Round{round}, m_MaxRounds{maxRounds},
       m_EntityIndex{entityIndex} {
-  sortEntities();
+  sortEntities(m_Entities);
 }
 
 Encounter::StepResult_t Encounter::next() {
@@ -47,7 +47,7 @@ bool Encounter::addEntity(Entity const &entity) {
   try {
     std::vector<Entity> copy = m_Entities;
     copy.push_back(entity);
-    sortEntities();
+    sortEntities(copy);
     if (m_Entities.size() > 0) {
       bool found = false;
       std::size_t index = 0;
