@@ -17,6 +17,8 @@ inline void Encounter::sortEntities(std::vector<Entity>& entities) const {
             });
 }
 
+Encounter::Encounter()
+    : Encounter{ std::vector<Entity>{} } {}
 Encounter::Encounter(std::vector<Entity> &&entities)
     : Encounter{std::move(entities), 1, std::numeric_limits<std::size_t>::max(),
                 0} {}
