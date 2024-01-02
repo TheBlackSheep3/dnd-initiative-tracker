@@ -1,15 +1,16 @@
-#include <algorithm>
-#include <exception>
-#include <iterator>
-#include <limits>
-#include <vector>
+#include <algorithm> // std::sort()
+#include <exception> // std::exception
+#include <iterator>  // std::next()
+#include <limits>    // std::numeric_limits
+#include <utility>   // std::move()
+#include <vector>    // std::vector, std::begin()
 
 #include "encounter.hpp"
 #include "entity.hpp"
 
 namespace nd {
 namespace init_tracker {
-inline void Encounter::sortEntities(std::vector<Entity>& entities) {
+inline void Encounter::sortEntities(std::vector<Entity>& entities) const {
   std::sort(entities.begin(), entities.end(),
             [](Entity const &left, Entity const &right) {
               return left.getInitiative() > right.getInitiative();
@@ -21,13 +22,13 @@ Encounter::Encounter(std::vector<Entity> &&entities)
                 0} {}
 Encounter::Encounter(std::vector<Entity> &&entities, std::size_t round,
                      std::size_t maxRounds, std::size_t entityIndex)
-    : m_Entities{entities}, m_Round{round}, m_MaxRounds{maxRounds},
+    : m_Entities{std::move(entities)}, m_Round{round}, m_MaxRounds{maxRounds},
       m_EntityIndex{entityIndex} {
   sortEntities(m_Entities);
 }
 
 Encounter::StepResult_t Encounter::next() {
-  if (0 == m_Entities.size()) {
+  if (m_Entities.empty()) {
     return Encounter::StepResult_t::Finished;
   }
   m_EntityIndex += 1;
@@ -48,10 +49,10 @@ bool Encounter::addEntity(Entity const &entity) {
     std::vector<Entity> copy = m_Entities;
     copy.push_back(entity);
     sortEntities(copy);
-    if (m_Entities.size() > 0) {
+    if (!m_Entities.empty()) {
       bool found = false;
       std::size_t index = 0;
-      for (auto e : copy) {
+      for (Entity const e : copy) {
         if (e == m_Entities[m_EntityIndex]) {
           found = true;
           break;
@@ -82,8 +83,8 @@ bool Encounter::removeEntity(std::size_t entityIndex) {
       m_EntityIndex -= 1;
     }
     std::vector<Entity> copy = m_Entities;
-    copy.erase(std::next(copy.begin(), entityIndex),
-               std::next(copy.begin(), entityIndex + 1));
+    copy.erase(std::next(std::begin(copy), entityIndex),
+               std::next(std::begin(copy), entityIndex + 1));
     m_Entities = std::move(copy);
     return true;
   } catch (std::exception) {
