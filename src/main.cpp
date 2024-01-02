@@ -1,12 +1,10 @@
-#include <algorithm>
-#include <cmath>
-#include <cstdio>
-#include <iostream>
-#include <iterator>
-#include <ostream>
-#include <string>
-#include <utility>
-#include <vector>
+#include <algorithm> // std::find()
+#include <iostream>  // std::cin, std::cout
+#include <ostream>   // std::ostream, std::endl
+#include <string>    // std::string, std::getline(), std::begin(), std::end()
+#include <utility>   // std::move()
+#include <vector>    // std::vector
+#include <optional>  // std::optional
 
 #include "cmake_variables.hpp"
 #include "encounter.hpp"
