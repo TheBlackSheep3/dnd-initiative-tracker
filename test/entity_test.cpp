@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include <strstream>
+#include <sstream>
 
 #include "entity.hpp"
 
@@ -42,13 +42,13 @@ TEST_F(EntityTest, EqualityTest) {
 TEST_F(EntityTest, OStreamTest) {
   using namespace std::string_literals;
 
-  std::ostrstream teststream;
+  std::ostringstream teststream;
   teststream << e0;
   EXPECT_EQ(teststream.str(), "entity (1.20)"s);
-  teststream = std::ostrstream{};
+  teststream = std::ostringstream{};
   teststream << e1;
   EXPECT_EQ(teststream.str(), "entity (1.20)"s);
-  teststream = std::ostrstream{};
+  teststream = std::ostringstream{};
   teststream << e2;
   EXPECT_EQ(teststream.str(), "other entity (3.20)"s);
 }
