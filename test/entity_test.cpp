@@ -1,5 +1,5 @@
-#include <gtest/gtest.h>
-#include <sstream>
+#include <gtest/gtest.h> // testing::Test, ASSERT_*, EXPECT_*
+#include <sstream>       // std::ostringstream
 
 #include "entity.hpp"
 
@@ -7,13 +7,9 @@ namespace nd {
 namespace init_tracker {
 class EntityTest : public testing::Test {
 protected:
-  Entity const e0;
-  Entity const e1;
-  Entity const e2;
-
-  EntityTest()
-      : e0{"entity", 1.2F}, e1{"entity", 1.2F, 1}, e2{"other entity", 3.2F, 4} {
-  }
+  Entity const e0 = Entity{"entity", 1.2F};
+  Entity const e1 = Entity{"entity", 1.2F, 1};
+  Entity const e2 = Entity{"other entity", 3.2F, 4};
 
   void SetUp() override {
     ASSERT_EQ(e0.getName(), "entity");
