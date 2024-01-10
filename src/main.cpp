@@ -23,7 +23,7 @@ int main(/* int argc, char *argv[] */) {
             << std::endl;
   std::vector<Entity> entities{};
   std::string str{};
-  float_t initiative;
+  double initiative;
   while (true) {
     std::cout << "New entity:\nName: ";
     std::cin >> str;

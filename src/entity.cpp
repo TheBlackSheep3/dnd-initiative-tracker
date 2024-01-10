@@ -7,10 +7,10 @@
 
 namespace nd {
 namespace init_tracker {
-Entity::Entity(std::string const &name, float initiative)
+Entity::Entity(std::string const &name, double initiative)
     : Entity{name, initiative, 1} {}
 
-Entity::Entity(std::string const &name, float initiative,
+Entity::Entity(std::string const &name, double initiative,
                std::size_t firstRound)
     : m_Name{name}, m_Initiative{initiative} {
   if (firstRound > 0) {
@@ -21,7 +21,7 @@ Entity::Entity(std::string const &name, float initiative,
 }
 
 std::string const &Entity::getName() const { return m_Name; }
-float_t Entity::getInitiative() const { return m_Initiative; }
+double Entity::getInitiative() const { return m_Initiative; }
 std::size_t Entity::getFirstRound() const { return m_FirstRound; }
 
 bool Entity::Equals(Entity const &other) const {
