@@ -8,15 +8,15 @@ namespace init_tracker {
 class Entity {
 private:
   std::string m_Name;
-  float_t m_Initiative;
+  double m_Initiative;
   std::size_t m_FirstRound;
 
 public:
-  Entity(std::string const &name, float_t initiative);
-  Entity(std::string const &name, float_t initiative, std::size_t firstRound);
+  Entity(std::string const &name, double initiative);
+  Entity(std::string const &name, double initiative, std::size_t firstRound);
 
   std::string const &getName() const;
-  float_t getInitiative() const;
+  double getInitiative() const;
   std::size_t getFirstRound() const;
 
   bool Equals(Entity const &other) const;

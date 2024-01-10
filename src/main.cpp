@@ -1,12 +1,10 @@
-#include <algorithm>
-#include <cmath>
-#include <cstdio>
-#include <iostream>
-#include <iterator>
-#include <ostream>
-#include <string>
-#include <utility>
-#include <vector>
+#include <algorithm> // std::find()
+#include <iostream>  // std::cin, std::cout
+#include <ostream>   // std::ostream, std::endl
+#include <string>    // std::string, std::getline(), std::begin(), std::end()
+#include <utility>   // std::move()
+#include <vector>    // std::vector
+#include <optional>  // std::optional
 
 #include "cmake_variables.hpp"
 #include "encounter.hpp"
@@ -25,7 +23,7 @@ int main(/* int argc, char *argv[] */) {
             << std::endl;
   std::vector<Entity> entities{};
   std::string str{};
-  float_t initiative;
+  double initiative;
   while (true) {
     std::cout << "New entity:\nName: ";
     std::cin >> str;

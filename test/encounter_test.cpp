@@ -1,30 +1,27 @@
-#include <algorithm>
-#include <cstddef>
-#include <gtest/gtest.h>
-#include <iterator>
-#include <limits>
-#include <vector>
+#include <algorithm>     // std::is_sorted()
+#include <cstddef>       // std::size_t
+#include <gtest/gtest.h> // testing::Test, TEST_F, EXPECT_*, ASSERT_*
+#include <limits>        // std::numeric_limits
+#include <utility>       // std::move()
+#include <vector>        // std::vector, std::begin(), std::end()
 
 #include "encounter.hpp"
 
 namespace nd {
 namespace init_tracker {
 class EncounterTest : public testing::Test {
-protected:
+private:
   Encounter empty_encounter;
   Encounter fresh_encounter;
   Encounter middle_encounter;
   Encounter finished_encounter;
 
+protected:
   std::vector<Entity> const encounter_entities = {Entity{"Barbarian", 10.08F},
                                                   Entity{"Rogue", 18.16F},
                                                   Entity{"Wizard", 13.10F}};
 
-  EncounterTest()
-      : empty_encounter{std::vector<Entity>{}},
-        fresh_encounter{std::vector<Entity>{}},
-        middle_encounter{std::vector<Entity>{}},
-        finished_encounter{std::vector<Entity>{}} {
+  EncounterTest() {
     std::vector<Entity> entities = encounter_entities;
     fresh_encounter = Encounter{std::move(entities), /* round */ 1,
                                 /* max rounds */ 5, /* current entity */ 0};
@@ -60,90 +57,96 @@ protected:
       return true;
     }
   }
+
   void SetUp() override { ASSERT_TRUE(AreEntitiesSorted()); }
+
+  Encounter& Empty() { return empty_encounter; }
+  Encounter& Fresh() { return fresh_encounter; }
+  Encounter& Middle() { return middle_encounter; }
+  Encounter& Finished() { return finished_encounter; }
 };
 
 TEST_F(EncounterTest, NextTest) {
-  EXPECT_EQ(Encounter::Finished, empty_encounter.next());
-  EXPECT_EQ(Encounter::NextEntity, fresh_encounter.next());
-  EXPECT_EQ(Encounter::NextEntity, middle_encounter.next());
-  EXPECT_EQ(Encounter::NextRound, middle_encounter.next());
-  EXPECT_EQ(Encounter::Finished, finished_encounter.next());
+  EXPECT_EQ(Encounter::Finished, Empty().next());
+  EXPECT_EQ(Encounter::NextEntity, Fresh().next());
+  EXPECT_EQ(Encounter::NextEntity, Middle().next());
+  EXPECT_EQ(Encounter::NextRound, Middle().next());
+  EXPECT_EQ(Encounter::Finished, Finished().next());
 }
 
 TEST_F(EncounterTest, AddEntityTest) {
-  Entity boblin{"Boblin", 7.09};
-  ASSERT_TRUE(empty_encounter.addEntity(boblin));
-  ASSERT_EQ(1, empty_encounter.getEntities().size());
-  EXPECT_EQ(boblin, empty_encounter.getEntities()[0]);
-  EXPECT_EQ(0, empty_encounter.getCurrentEntityIndex());
-  EXPECT_EQ(1, empty_encounter.getCurrentRound());
+  Entity boblin{"Boblin", 7.09F};
+  ASSERT_TRUE(Empty().addEntity(boblin));
+  ASSERT_EQ(1, Empty().getEntities().size());
+  EXPECT_EQ(boblin, Empty().getEntities()[0]);
+  EXPECT_EQ(0, Empty().getCurrentEntityIndex());
+  EXPECT_EQ(1, Empty().getCurrentRound());
   EXPECT_EQ(std::numeric_limits<std::size_t>::max(),
-            empty_encounter.getMaxRounds());
-  ASSERT_TRUE(fresh_encounter.addEntity(boblin));
-  ASSERT_EQ(4, fresh_encounter.getEntities().size());
-  EXPECT_EQ(boblin, fresh_encounter.getEntities()[3]);
-  EXPECT_EQ(0, fresh_encounter.getCurrentEntityIndex());
-  EXPECT_EQ(1, fresh_encounter.getCurrentRound());
-  EXPECT_EQ(5, fresh_encounter.getMaxRounds());
-  ASSERT_TRUE(middle_encounter.addEntity(boblin));
-  ASSERT_EQ(4, middle_encounter.getEntities().size());
-  EXPECT_EQ(boblin, middle_encounter.getEntities()[3]);
-  EXPECT_EQ(1, middle_encounter.getCurrentEntityIndex());
-  EXPECT_EQ(3, middle_encounter.getCurrentRound());
-  EXPECT_EQ(5, middle_encounter.getMaxRounds());
-  ASSERT_TRUE(finished_encounter.addEntity(boblin));
-  ASSERT_EQ(4, finished_encounter.getEntities().size());
-  EXPECT_EQ(boblin, finished_encounter.getEntities()[3]);
-  EXPECT_EQ(2, finished_encounter.getCurrentEntityIndex());
-  EXPECT_EQ(5, finished_encounter.getCurrentRound());
-  EXPECT_EQ(5, finished_encounter.getMaxRounds());
+            Empty().getMaxRounds());
+  ASSERT_TRUE(Fresh().addEntity(boblin));
+  ASSERT_EQ(4, Fresh().getEntities().size());
+  EXPECT_EQ(boblin, Fresh().getEntities()[3]);
+  EXPECT_EQ(0, Fresh().getCurrentEntityIndex());
+  EXPECT_EQ(1, Fresh().getCurrentRound());
+  EXPECT_EQ(5, Fresh().getMaxRounds());
+  ASSERT_TRUE(Middle().addEntity(boblin));
+  ASSERT_EQ(4, Middle().getEntities().size());
+  EXPECT_EQ(boblin, Middle().getEntities()[3]);
+  EXPECT_EQ(1, Middle().getCurrentEntityIndex());
+  EXPECT_EQ(3, Middle().getCurrentRound());
+  EXPECT_EQ(5, Middle().getMaxRounds());
+  ASSERT_TRUE(Finished().addEntity(boblin));
+  ASSERT_EQ(4, Finished().getEntities().size());
+  EXPECT_EQ(boblin, Finished().getEntities()[3]);
+  EXPECT_EQ(2, Finished().getCurrentEntityIndex());
+  EXPECT_EQ(5, Finished().getCurrentRound());
+  EXPECT_EQ(5, Finished().getMaxRounds());
 
-  boblin = Entity{"Boblin the fast", 20.20};
-  ASSERT_TRUE(empty_encounter.addEntity(boblin));
-  ASSERT_EQ(2, empty_encounter.getEntities().size());
-  EXPECT_EQ(boblin, empty_encounter.getEntities()[0]);
-  EXPECT_EQ(1, empty_encounter.getCurrentEntityIndex());
-  EXPECT_EQ(1, empty_encounter.getCurrentRound());
+  boblin = Entity{"Boblin the fast", 20.20F};
+  ASSERT_TRUE(Empty().addEntity(boblin));
+  ASSERT_EQ(2, Empty().getEntities().size());
+  EXPECT_EQ(boblin, Empty().getEntities()[0]);
+  EXPECT_EQ(1, Empty().getCurrentEntityIndex());
+  EXPECT_EQ(1, Empty().getCurrentRound());
   EXPECT_EQ(std::numeric_limits<std::size_t>::max(),
-            empty_encounter.getMaxRounds());
-  ASSERT_TRUE(fresh_encounter.addEntity(boblin));
-  ASSERT_EQ(5, fresh_encounter.getEntities().size());
-  EXPECT_EQ(boblin, fresh_encounter.getEntities()[0]);
-  EXPECT_EQ(1, fresh_encounter.getCurrentEntityIndex());
-  EXPECT_EQ(1, fresh_encounter.getCurrentRound());
-  EXPECT_EQ(5, fresh_encounter.getMaxRounds());
-  ASSERT_TRUE(middle_encounter.addEntity(boblin));
-  ASSERT_EQ(5, middle_encounter.getEntities().size());
-  EXPECT_EQ(boblin, middle_encounter.getEntities()[0]);
-  EXPECT_EQ(2, middle_encounter.getCurrentEntityIndex());
-  EXPECT_EQ(3, middle_encounter.getCurrentRound());
-  EXPECT_EQ(5, middle_encounter.getMaxRounds());
-  ASSERT_TRUE(finished_encounter.addEntity(boblin));
-  ASSERT_EQ(5, finished_encounter.getEntities().size());
-  EXPECT_EQ(boblin, finished_encounter.getEntities()[0]);
-  EXPECT_EQ(3, finished_encounter.getCurrentEntityIndex());
-  EXPECT_EQ(5, finished_encounter.getCurrentRound());
-  EXPECT_EQ(5, finished_encounter.getMaxRounds());
+            Empty().getMaxRounds());
+  ASSERT_TRUE(Fresh().addEntity(boblin));
+  ASSERT_EQ(5, Fresh().getEntities().size());
+  EXPECT_EQ(boblin, Fresh().getEntities()[0]);
+  EXPECT_EQ(1, Fresh().getCurrentEntityIndex());
+  EXPECT_EQ(1, Fresh().getCurrentRound());
+  EXPECT_EQ(5, Fresh().getMaxRounds());
+  ASSERT_TRUE(Middle().addEntity(boblin));
+  ASSERT_EQ(5, Middle().getEntities().size());
+  EXPECT_EQ(boblin, Middle().getEntities()[0]);
+  EXPECT_EQ(2, Middle().getCurrentEntityIndex());
+  EXPECT_EQ(3, Middle().getCurrentRound());
+  EXPECT_EQ(5, Middle().getMaxRounds());
+  ASSERT_TRUE(Finished().addEntity(boblin));
+  ASSERT_EQ(5, Finished().getEntities().size());
+  EXPECT_EQ(boblin, Finished().getEntities()[0]);
+  EXPECT_EQ(3, Finished().getCurrentEntityIndex());
+  EXPECT_EQ(5, Finished().getCurrentRound());
+  EXPECT_EQ(5, Finished().getMaxRounds());
 }
 
 TEST_F(EncounterTest, RemoveEntityTest) {
-  ASSERT_FALSE(empty_encounter.removeEntity(1));
-  ASSERT_TRUE(fresh_encounter.removeEntity(1));
-  ASSERT_EQ(2, fresh_encounter.getEntities().size());
-  EXPECT_EQ(0, fresh_encounter.getCurrentEntityIndex());
-  EXPECT_EQ(1, fresh_encounter.getCurrentRound());
-  EXPECT_EQ(5, fresh_encounter.getMaxRounds());
-  ASSERT_TRUE(middle_encounter.removeEntity(1));
-  ASSERT_EQ(2, middle_encounter.getEntities().size());
-  EXPECT_EQ(1, middle_encounter.getCurrentEntityIndex());
-  EXPECT_EQ(3, middle_encounter.getCurrentRound());
-  EXPECT_EQ(5, middle_encounter.getMaxRounds());
-  ASSERT_TRUE(finished_encounter.removeEntity(1));
-  ASSERT_EQ(2, finished_encounter.getEntities().size());
-  EXPECT_EQ(1, finished_encounter.getCurrentEntityIndex());
-  EXPECT_EQ(5, finished_encounter.getCurrentRound());
-  EXPECT_EQ(5, finished_encounter.getMaxRounds());
+  ASSERT_FALSE(Empty().removeEntity(1));
+  ASSERT_TRUE(Fresh().removeEntity(1));
+  ASSERT_EQ(2, Fresh().getEntities().size());
+  EXPECT_EQ(0, Fresh().getCurrentEntityIndex());
+  EXPECT_EQ(1, Fresh().getCurrentRound());
+  EXPECT_EQ(5, Fresh().getMaxRounds());
+  ASSERT_TRUE(Middle().removeEntity(1));
+  ASSERT_EQ(2, Middle().getEntities().size());
+  EXPECT_EQ(1, Middle().getCurrentEntityIndex());
+  EXPECT_EQ(3, Middle().getCurrentRound());
+  EXPECT_EQ(5, Middle().getMaxRounds());
+  ASSERT_TRUE(Finished().removeEntity(1));
+  ASSERT_EQ(2, Finished().getEntities().size());
+  EXPECT_EQ(1, Finished().getCurrentEntityIndex());
+  EXPECT_EQ(5, Finished().getCurrentRound());
+  EXPECT_EQ(5, Finished().getMaxRounds());
   ASSERT_TRUE(AreEntitiesSorted());
 }
 } // namespace init_tracker
