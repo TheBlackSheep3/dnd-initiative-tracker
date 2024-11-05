@@ -149,5 +149,14 @@ TEST_F(EncounterTest, RemoveEntityTest) {
   EXPECT_EQ(5, Finished().getMaxRounds());
   ASSERT_TRUE(AreEntitiesSorted());
 }
+
+// TODO: add test verifying that entities present in later
+// rounds get skipped on earlier calls of next()
+// enitity with first round 2 gets skipped in round 1
+
+TEST_F(EncounterTest, SkipInactiveEntities) {
+
+}
+
 } // namespace init_tracker
 } // namespace nd
